@@ -31,7 +31,7 @@ def create_word_doc(data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
+    if request.method == "POST":  # Use double quotes for consistency
         district_name = request.form['district_name']
         location = request.form['location']
         data = {
