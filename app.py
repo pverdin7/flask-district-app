@@ -29,9 +29,12 @@ def create_word_doc(data):
     file_stream.seek(0)
     return file_stream
 
+from flask import Response
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
+    html_content = render_template("index.html")
+    return Response(html_content, content_type='text/html')
 
 
 @app.route('/export', methods=['POST'])
