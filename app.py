@@ -31,7 +31,7 @@ def create_word_doc(data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":  # Use double quotes for consistency
+    if request.method == "POST":
         district_name = request.form['district_name']
         location = request.form['location']
         data = {
@@ -39,9 +39,9 @@ def index():
             "Location": location,
             "Website": get_district_data(district_name, location)
         }
-        return render_template("index.html", data=data)
+        return f"TEST PAGE LOADED: {data}"  # TEMPORARY DEBUGGING MESSAGE
     
-    return render_template("index.html")
+    return "FLASK IS RETURNING THIS INSTEAD OF index.html"  # TEMPORARY DEBUG MESSAGE
 
 @app.route('/export', methods=['POST'])
 def export():
