@@ -53,4 +53,4 @@ def export():
     return send_file(file_stream, as_attachment=True, download_name="district_report.docx", mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=10000)
