@@ -39,9 +39,10 @@ def index():
             "Location": location,
             "Website": get_district_data(district_name, location)
         }
-        return f"TEST PAGE LOADED: {data}"  # TEMPORARY DEBUGGING MESSAGE
+        return render_template("index.html", data=data)  # RESTORE TEMPLATE RENDERING
     
-    return "FLASK IS RETURNING THIS INSTEAD OF index.html"  # TEMPORARY DEBUG MESSAGE
+    return render_template("index.html")  # RESTORE TEMPLATE RENDERING
+
 
 @app.route('/export', methods=['POST'])
 def export():
