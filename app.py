@@ -31,17 +31,7 @@ def create_word_doc(data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
-        district_name = request.form['district_name']
-        location = request.form['location']
-        data = {
-            "District Name": district_name,
-            "Location": location,
-            "Website": get_district_data(district_name, location)
-        }
-        return render_template("index.html", data=data)  # RESTORE TEMPLATE RENDERING
-    
-    return render_template("index.html")  # RESTORE TEMPLATE RENDERING
+    return render_template("index.html")
 
 
 @app.route('/export', methods=['POST'])
