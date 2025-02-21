@@ -4,6 +4,7 @@ import io
 from docx import Document
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Function to fetch school district/university data
 def get_district_data(name, location):
@@ -51,6 +52,10 @@ def export():
     }
     file_stream = create_word_doc(data)
     return send_file(file_stream, as_attachment=True, download_name="district_report.docx", mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+@app.route('/test')
+def test():
+    return "Flask is running correctly!"
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=10000)
