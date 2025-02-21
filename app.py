@@ -58,5 +58,11 @@ def export():
 def test():
     return "Flask is running correctly!"
 
+@app.route('/debug-templates')
+def debug_templates():
+    import os
+    template_path = os.path.join(app.template_folder, "index.html")
+    return f"Flask is looking for: {template_path}. Exists: {os.path.exists(template_path)}"
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=10000)
