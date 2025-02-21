@@ -3,7 +3,7 @@ import requests
 import io
 from docx import Document
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 # Function to fetch school district/university data
 def get_district_data(name, location):
@@ -38,8 +38,9 @@ def index():
             "Location": location,
             "Website": get_district_data(district_name, location)
         }
-        return render_template('index.html', data=data)
-    return render_template('index.html')
+        return render_template("index.html", data=data)
+    
+    return render_template("index.html")
 
 @app.route('/export', methods=['POST'])
 def export():
