@@ -31,6 +31,20 @@ def create_word_doc(data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        district_name = request.form.get('district_name', '').strip()
+        location = request.form.get('location', '').strip()
+
+        if not district_name or not location:
+            return render_template("index.html", error="Please fill out both fields.")
+
+        data = {
+            "District Name": district_name,
+            "Location": location,
+            "Website": get_district_data(district_name, location)
+        }
+        return render_template("index.html", data=data)
+
     return render_template("index.html")
 
 
