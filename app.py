@@ -29,12 +29,24 @@ def create_word_doc(data):
     file_stream.seek(0)
     return file_stream
 
-from flask import Response
+from flask import render_template_string
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    html_content = render_template("index.html")
-    return Response(html_content, content_type='text/html')
+    test_html = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flask Debug Page</title>
+    </head>
+    <body>
+        <h1>Flask is Rendering HTML Properly!</h1>
+    </body>
+    </html>
+    """
+    return render_template_string(test_html)
 
 
 @app.route('/export', methods=['POST'])
