@@ -8,14 +8,35 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Function to fetch school district/university data
 def get_district_data(name, location):
-    search_query = f"{name} {location} school district site:.gov OR site:.edu"
-    search_url = f"https://www.googleapis.com/customsearch/v1?q={search_query}&key=AIzaSyDkW3m1DdVfHbqirYNRa2eSna1ZSG3BY_o&cx=77cbed915d0c641b3"
-    response = requests.get(search_url)
-    if response.status_code == 200:
-        results = response.json().get("items", [])
-        if results:
-            return results[0]['link']
-    return "No data found"
+    search_queries = {
+        "Website": f"{name} {location} school district site:.gov OR site:.edu",
+        "Key Stakeholders": f"{name} {location} school district leadership site:.gov OR site:.edu",
+        "Enrollment": f"{name} {location} school district enrollment number of high schools site:.gov OR site:.edu",
+        "Wellness Initiatives": f"{name} {location} school district wellness program site:.gov OR site:.edu",
+        "Grants": f"{name} {location} school district available grants wellness funding site:.gov OR site:.edu",
+        "News": f"{name} {location} school district news board decisions site:.gov OR site:.edu"
+    }
+
+    search_results = {}
+
+    for category, query in search_queries.items():
+        search_url = f"https://www.googleapis.com/customsearch/v1?q={query}&key=AIzaSyDkW3m1DdVfHbqirYNRa2eSna1ZSG3BY_o&cx=77cbed915d0c641b3"
+        response = requests.get(search_url)
+
+        if response.status_code == 200:
+            results = response.json().get("items", [])
+            if results:
+                search_results[category] = {
+                    "title": results[0].get("title", "No Title"),
+                    "snippet": results[0].get("snippet", "No description available."),
+                    "link": results[0].get("link", "#")
+                }
+            else:
+                search_results[category] = {"title": "No Data Found", "snippet": "", "link": "#"}
+        else:
+            search_results[category] = {"title": "Error retrieving data", "snippet": "", "link": "#"}
+
+    return search_results
 
 # Function to create Word document
 def create_word_doc(data):
@@ -38,11 +59,16 @@ def index():
         if not district_name or not location:
             return render_template("index.html", error="Please fill out both fields.")
 
+        search_results = get_district_data(district_name, location)
+
+        print("Search Results:", search_results)  # Debugging
+
         data = {
             "District Name": district_name,
             "Location": location,
-            "Website": get_district_data(district_name, location)
+            "Results": search_results  # Pass multiple search results
         }
+
         return render_template("index.html", data=data)
 
     return render_template("index.html")
