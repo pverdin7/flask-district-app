@@ -23,21 +23,23 @@
         </form>
     </div>
 
-    {% if data %}
-    <div class="container result-box">
-        <h3>Search Results</h3>
-        <p><strong>District Name:</strong> {{ data["District Name"] }}</p>
-        <p><strong>Location:</strong> {{ data["Location"] }}</p>
-        <p><strong>Website:</strong> <a href="{{ data['Website'] }}" target="_blank">Visit Site</a></p>
+    {% if data["Results"] %}
+        <h3>Detailed School District Information</h3>
 
-        <form action="/export" method="POST">
-            <input type="hidden" name="district_name" value="{{ data['District Name'] }}">
-            <input type="hidden" name="location" value="{{ data['Location'] }}">
-            <input type="hidden" name="website" value="{{ data['Website'] }}">
-            <button type="submit">Export to Word</button>
-        </form>
-    </div>
+        {% for category, results in data["Results"].items() %}
+            <h4>{{ category }}</h4>
+            <ul>
+                {% for result in results %}
+                    <li>
+                        <strong>{{ result.title }}</strong><br>
+                        {{ result.snippet }}<br>
+                        <a href="{{ result.link }}" target="_blank">View More</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
     {% endif %}
+
 </body>
 </html>
 
